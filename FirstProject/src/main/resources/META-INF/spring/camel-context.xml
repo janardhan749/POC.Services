@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Configures the Camel Context -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:cxf="http://camel.apache.org/schema/cxf" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cxfcore="http://cxf.apache.org/core" xmlns:ctx="http://www.springframework.org/schema/context"
+	xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+       http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd
+       http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd
+       http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd" >
+
+<import resource="classpath:META-INF/cxf/cxf.xml" />
+
+<bean id="loggingFeature" class="org.apache.cxf.feature.LoggingFeature" />
+<bean id="jsonDataProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
+<bean id="GZIPInInterceptor" class="org.apache.cxf.transport.common.gzip.GZIPInInterceptor" />
+<bean id="serviceClass" class="com.rgukt.in.FirstProject.Resource" />
+
+<cxf:rsServer id="CXFRestEndpoint" address="http://localhost:8999/user">
+	<cxf:serviceBeans>
+		<ref bean="serviceClass" />
+	</cxf:serviceBeans>
+	<cxf:features> 
+		<ref bean="loggingFeature" /> 
+	</cxf:features> 
+	<cxf:providers> 
+		<ref bean="jsonDataProvider" />
+		<!-- <bean bean="exception" /> --> 
+	</cxf:providers> 
+	<cxf:inInterceptors> 
+		<ref bean="GZIPInInterceptor" /> 
+	</cxf:inInterceptors>
+</cxf:rsServer>
+<cxf:rsClient id="StubEndpoint" address="http://localhost:7090/stub">
+	<cxf:properties>
+			<entry key="dataFormat" value="POJO" />
+	</cxf:properties>
+	<cxf:features> 
+		<ref bean="loggingFeature" /> 
+	</cxf:features> 
+	<cxf:providers> 
+		<ref bean="jsonDataProvider" /> 
+	</cxf:providers> 
+	<cxf:inInterceptors> 
+		<ref bean="GZIPInInterceptor" /> 
+	</cxf:inInterceptors>
+</cxf:rsClient>
+
+<bean id="datamapper" class="com.rgukt.in.FirstProject.DataMapper" />
+<bean id="mymapper" class="com.rgukt.in.FirstProject.MyMapper" />
+<bean id="myAggregateRef" class="com.rgukt.in.FirstProject.AggregationRef" />
+
+<camelContext id="routes" xmlns="http://camel.apache.org/schema/spring" >
+	 <route handleFault="true" streamCache="true" id="Route"> 
+			<from uri="cxfrs://bean://CXFRestEndpoint?synchronous=true"/>
+			<bean ref="mymapper" method="parallelCall"/>
+			<!-- <to uri = "cxfrs:bean:StubEndpoint" id="mockEnd"/> -->
+			<recipientList strategyRef="myAggregateRef" parallelProcessing="true" >
+        		<header>routes</header>
+    		</recipientList>
+    		<bean ref="mymapper" method="parallelResponse"/>
+	</route>
+	
+		<!-- <route handleFault="true" streamCache="true" id="Route"> 
+			<from uri="cxfrs://bean://CXFRestEndpoint?synchronous=true"/>
+			<bean ref="datamapper" method="Validate"/>
+			<bean ref="datamapper" method="mapRequest"/>
+			<doTry>
+    			<to uri = "cxfrs:bean:StubEndpoint" id="mockEnd"/>
+    			<doCatch>
+		       		 <exception>javax.ws.rs.NotFoundException</exception>
+		       		 <exception>javax.ws.rs.client.ClientException</exception>
+		       		 <exception>javax.ws.rs.NotAllowedException</exception>
+		       		 <handled><constant>true</constant></handled>
+		       		 <bean ref="datamapper" method="throwErrorService"/>
+		     	 </doCatch>
+		    	<doCatch>
+		       		 <exception>javax.ws.rs.WebApplicationException</exception>
+		       		 <handled><constant>true</constant></handled>
+		       		 <bean ref="datamapper" method="throwError"/>
+		     	 </doCatch>
+		     	 <doCatch>
+		       		 <exception>java.lang.Exception</exception>
+		       		 <handled><constant>true</constant></handled>
+		     	 </doCatch>
+		    </doTry>
+		    <bean ref="datamapper" method="mapResponse"/>
+		</route> -->
+			
+</camelContext>
+</beans>
