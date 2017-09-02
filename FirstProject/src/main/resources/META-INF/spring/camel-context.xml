@@ -16,12 +16,11 @@
        http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd" >
 
-<import resource="classpath:META-INF/cxf/cxf.xml" />
 
 <bean id="loggingFeature" class="org.apache.cxf.feature.LoggingFeature" />
 <bean id="jsonDataProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
 <bean id="GZIPInInterceptor" class="org.apache.cxf.transport.common.gzip.GZIPInInterceptor" />
-<bean id="serviceClass" class="com.rgukt.in.FirstProject.Resource" />
+<bean id="serviceClass" class="com.mypractice.in.FirstProject.Resource" />
 
 <cxf:rsServer id="CXFRestEndpoint" address="http://localhost:8999/user">
 	<cxf:serviceBeans>
@@ -38,7 +37,7 @@
 		<ref bean="GZIPInInterceptor" /> 
 	</cxf:inInterceptors>
 </cxf:rsServer>
-<cxf:rsClient id="StubEndpoint" address="http://localhost:7090/stub">
+<cxf:rsClient id="StubEndpoint" address="http://localhost:8181/cxf/v1/stub/">
 	<cxf:properties>
 			<entry key="dataFormat" value="POJO" />
 	</cxf:properties>
@@ -53,19 +52,30 @@
 	</cxf:inInterceptors>
 </cxf:rsClient>
 
-<bean id="datamapper" class="com.rgukt.in.FirstProject.DataMapper" />
-<bean id="mymapper" class="com.rgukt.in.FirstProject.MyMapper" />
-<bean id="myAggregateRef" class="com.rgukt.in.FirstProject.AggregationRef" />
+<bean id="datamapper" class="com.mypractice.in.FirstProject.DataMapper" />
+<bean id="mymapper" class="com.mypractice.in.FirstProject.MyMapper" />
+<bean id="myAggregateRef" class="com.mypractice.in.FirstProject.AggregationRef" />
 
 <camelContext id="routes" xmlns="http://camel.apache.org/schema/spring" >
+
 	 <route handleFault="true" streamCache="true" id="Route"> 
 			<from uri="cxfrs://bean://CXFRestEndpoint?synchronous=true"/>
-			<bean ref="mymapper" method="parallelCall"/>
-			<!-- <to uri = "cxfrs:bean:StubEndpoint" id="mockEnd"/> -->
-			<recipientList strategyRef="myAggregateRef" parallelProcessing="true" >
+			<camel:split strategyRef="myAggregateRef" parallelProcessing="true">
+				<camel:method ref="mymapper" method="setRequestPaths"/>
+				<to uri="direct:Route2" />
+			</camel:split>
+			
+			<!-- <recipientList strategyRef="myAggregateRef" parallelProcessing="true" >
         		<header>routes</header>
-    		</recipientList>
+    		</recipientList> -->
+    		
     		<bean ref="mymapper" method="parallelResponse"/>
+	</route>
+	
+	<route handleFault="true" streamCache="true" id="Route2"> 
+		<from uri="direct:Route2" />
+		<bean ref="mymapper" method="parallelCall"/>
+		<to uri = "cxfrs:bean:StubEndpoint" id="mockEnd"/>
 	</route>
 	
 		<!-- <route handleFault="true" streamCache="true" id="Route"> 

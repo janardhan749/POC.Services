@@ -1,4 +1,4 @@
-package com.rgukt.in.FirstProject;
+package com.mypractice.in.FirstProject;
 
 public class Persons {
 

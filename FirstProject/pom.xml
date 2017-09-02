@@ -1,233 +1,232 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-  <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.rgukt.in</groupId>
-  <artifactId>FirstProject</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>bundle</packaging>
+	<groupId>com.mypractice.in</groupId>
+	<artifactId>FirstProject</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>bundle</packaging>
 
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <jackson.version>1.9.13</jackson.version>
-	<spring.version>3.1.4.RELEASE</spring.version>
-	<cxf.version>2.7.0.redhat-611412</cxf.version>
-	<camel.version>2.12.0.redhat-611412</camel.version>
-  </properties>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<jackson.version>1.9.13</jackson.version>
+		<spring.version>4.3.9.RELEASE</spring.version>
+		<cxf.version>3.1.5.redhat-630187</cxf.version>
+		<!-- <cxf.version>2.7.0.redhat-611412</cxf.version> -->
+		<camel.version>2.17.0.redhat-630187</camel.version>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+	</properties>
 
-  <dependencies>
-  <!--  apache camel -->
-    <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-core</artifactId>
-      <version>${camel.version}</version>
-    </dependency>
-    <dependency>
-	   <groupId>org.apache.camel</groupId>
-	   <artifactId>camel-cxf</artifactId>
-	   <version>${camel.version}</version>
-	</dependency>
-    <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-spring</artifactId>
-      <version>${camel.version}</version>
-    </dependency>
-    <dependency>
-		<groupId>org.apache.camel</groupId>
-		<artifactId>camel-test</artifactId>
-		<scope>test</scope>
-		<version>${camel.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>org.apache.camel</groupId>
-		<artifactId>camel-test-spring</artifactId>
-		<scope>test</scope>
-		<version>${camel.version}</version>
-	</dependency>
-	
-	<!-- apache cxf  -->
-	<dependency>
-		<groupId>org.apache.cxf</groupId>
-		<artifactId>cxf-rt-transports-http</artifactId>
-		<version>${cxf.version}</version>
-	</dependency>
-	<dependency>
-        <groupId>org.apache.cxf</groupId>
-        <artifactId>cxf-rt-frontend-jaxws</artifactId>
-        <version>${cxf.version}</version>
-    </dependency>
-	<dependency>
-		<groupId>org.apache.cxf</groupId>
-		<artifactId>cxf-rt-core</artifactId>
-		<version>${cxf.version}</version>
-	</dependency>
-	<dependency>
-	    <groupId>org.apache.cxf</groupId>
-	    <artifactId>cxf-rt-rs-extension-providers</artifactId>
-	    <version>${cxf.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>org.apache.cxf</groupId>
-		<artifactId>cxf-bundle</artifactId>
-		<version>${cxf.version}</version>
-	</dependency>
-	<dependency>
-	    <groupId>org.apache.cxf</groupId>
-	    <artifactId>cxf-bundle-jaxrs</artifactId>
-	    <version>${cxf.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>org.apache.cxf</groupId>
-		<artifactId>cxf-api</artifactId>
-		<version>${cxf.version}</version>
-	</dependency>
-	<dependency>
-	    <groupId>org.apache.cxf</groupId>
-	    <artifactId>cxf-rt-transports-http-jetty</artifactId>
-	    <version>3.1.7</version>
-	</dependency>
-	<!-- spring framework -->
-	<dependency>
-		<groupId>org.springframework.osgi</groupId>
-		<artifactId>spring-osgi-core</artifactId>
-		<version>1.2.1</version>
-		<scope>compile</scope>
-	</dependency>
-	<dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring-expression</artifactId>
-		<version>${spring.version}</version>
-		<scope>compile</scope>
-	</dependency>
-	<dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring-tx</artifactId>
-		<version>${spring.version}</version>
-		<scope>compile</scope>
-	</dependency>
-	<dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring-jdbc</artifactId>
-		<version>${spring.version}</version>
-		<scope>compile</scope>
-	</dependency>
-	<dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring-beans</artifactId>
-		<version>${spring.version}</version>
-		<scope>compile</scope>
-	</dependency>
-	<dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring-core</artifactId>
-		<version>${spring.version}</version>
-		<scope>compile</scope>
-	</dependency>
-	<dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring-context</artifactId>
-		<version>${spring.version}</version>
-		<scope>compile</scope>
-	</dependency>
-	<dependency>
-	    <groupId>org.springframework</groupId>
-	    <artifactId>spring-web</artifactId>
-	    <version>${spring.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring-asm</artifactId>
-		<version>${spring.version}</version>
-		<scope>compile</scope>
-	</dependency>
-	<dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring-aop</artifactId>
-		<version>${spring.version}</version>
-		<scope>compile</scope>
-	</dependency>
+	<dependencies>
+		<!-- apache camel -->
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-core</artifactId>
+			<version>${camel.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-cxf</artifactId>
+			<version>${camel.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-spring</artifactId>
+			<version>${camel.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-test</artifactId>
+			<scope>test</scope>
+			<version>${camel.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-test-spring</artifactId>
+			<scope>test</scope>
+			<version>${camel.version}</version>
+		</dependency>
 
-    <!-- logging -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.7.10</version>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>1.7.10</version>
-    </dependency>
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.17</version>
-    </dependency>
-    
-    <!-- apache felix -->
-    <dependency>
-		<groupId>org.apache.felix</groupId>
-		<artifactId>maven-bundle-plugin</artifactId>
-		<version>2.3.7</version>
-	</dependency>
+		<!-- apache cxf -->
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-transports-http</artifactId>
+			<version>${cxf.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-frontend-jaxws</artifactId>
+			<version>${cxf.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-frontend-jaxrs</artifactId>
+			<version>${cxf.version}</version>
+		</dependency>
+		<!-- <dependency> <groupId>org.apache.cxf</groupId> <artifactId>cxf-rt-core</artifactId> 
+			<version>${cxf.version}</version> </dependency> <dependency> <groupId>org.apache.cxf</groupId> 
+			<artifactId>cxf-bundle</artifactId> <version>${cxf.version}</version> </dependency> 
+			<dependency> <groupId>org.apache.cxf</groupId> <artifactId>cxf-api</artifactId> 
+			<version>${cxf.version}</version> </dependency> -->
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-transports-http-jetty</artifactId>
+			<version>3.1.7</version>
+		</dependency>
+		<!-- spring framework -->
+		<dependency>
+			<groupId>org.springframework.osgi</groupId>
+			<artifactId>spring-osgi-core</artifactId>
+			<version>1.2.1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-expression</artifactId>
+			<version>${spring.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${spring.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${spring.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+<!-- 		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-asm</artifactId>
+			<version>${spring.version}</version>
+			<scope>compile</scope>
+		</dependency> -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${spring.version}</version>
+			<scope>compile</scope>
+		</dependency>
 
-    <!-- testing -->
-    <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-test-spring</artifactId>
-      <version>${camel.version}</version>
-      <scope>test</scope>
-    </dependency>
+		<!-- logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.10</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.10</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
 
-	<!-- JSON -->
-	<dependency>
-		<groupId>org.apache.camel</groupId>
-		<artifactId>camel-jackson</artifactId>
-		<version>${camel.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>org.codehaus.jackson</groupId>
-		<artifactId>jackson-mapper-asl</artifactId>
-		<version>${jackson.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>org.codehaus.jackson</groupId>
-		<artifactId>jackson-jaxrs</artifactId>
-		<version>${jackson.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>org.codehaus.jackson</groupId>
-		<artifactId>jackson-xc</artifactId>
-		<version>${jackson.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>org.codehaus.jettison</groupId>
-		<artifactId>jettison</artifactId>
-		<version>1.3.5</version>
-	</dependency>
-	<dependency>
-    	<groupId>javax.annotation</groupId>
-	    <artifactId>jsr250-api</artifactId>
-	    <version>1.0</version>
-	</dependency>
-	
-  </dependencies>
+		<!-- JSON -->
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jackson</artifactId>
+			<version>${camel.version}</version>
+		</dependency>
+		<!-- <dependency> <groupId>com.fasterxml.jackson.core</groupId> <artifactId>jackson-databind</artifactId> 
+			<version>${jackson.version}</version> </dependency> <dependency> <groupId>com.fasterxml.jackson.jaxrs</groupId> 
+			<artifactId>jackson-jaxrs-json-provider</artifactId> <version>${jackson.version}</version> 
+			</dependency> <dependency> <groupId>com.fasterxml.jackson.module</groupId> 
+			<artifactId>jackson-module-jaxb-annotations</artifactId> <version>${jackson.version}</version> 
+			</dependency> -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-jaxrs</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-xc</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jettison</groupId>
+			<artifactId>jettison</artifactId>
+			<version>1.3.5</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>jsr250-api</artifactId>
+			<version>1.0</version>
+		</dependency>
 
-  <build>
-    <plugins>
-    
-    	<plugin>
+		<!-- SWAGGER -->
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-rs-service-description-swagger</artifactId>
+			<version>3.1.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>swagger-ui</artifactId>
+			<version>2.1.8-M1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-swagger-java</artifactId>
+			<version>${camel.version}</version>
+			<!-- Use the same version as your Camel core version -->
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+
+			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
+				<version>3.2.0</version>
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
 						<Bundle-SymbolicName>FirstProject</Bundle-SymbolicName>
 						<Export-Package>
-						
+
 						</Export-Package>
 						<Import-Package>
 							javax.annotation.security,
@@ -256,47 +255,70 @@
 							org.apache.cxf.jaxrs.provider.json,
 							org.apache.cxf.jaxrs.security,
 							org.apache.cxf.*,
+							org.apache.log4j,
 							org.codehaus.jackson.jaxrs,
 							org.codehaus.jackson.map,
 							org.codehaus.jackson,
 							org.codehaus.jackson.node,
-							org.eclipse.jetty.plus.jaas,
+							org.eclipse.jetty.jaas,
+							org.eclipse.jetty.security,
 							org.eclipse.jetty.server,
 							org.eclipse.jetty.server.handler,
 							org.apache.karaf.jaas.boot.principal,
 							org.slf4j
 						</Import-Package>
-						<Require-Bundle>org.apache.cxf.bundle</Require-Bundle>
 					</instructions>
 				</configuration>
 			</plugin>
-    
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.5.1</version>
-        <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>2.6</version>
-        <configuration>
-          <encoding>UTF-8</encoding>
-        </configuration>
-      </plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.6.2</version>
+					<configuration>
+						<source>1.8</source>
+						<target>1.8</target>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>2.7</version>
+					<configuration>
+						<encoding>UTF-8</encoding>
+					</configuration>
+				</plugin>
 
-      <!-- allows the route to be ran via 'mvn camel:run' -->
-      <plugin>
-        <groupId>org.apache.camel</groupId>
-        <artifactId>camel-maven-plugin</artifactId>
-        <version>${camel.version}</version>
-      </plugin>
-    </plugins>
-  </build>
+				<!-- allows the route to be ran via 'mvn camel:run' -->
+				<plugin>
+					<groupId>org.apache.camel</groupId>
+					<artifactId>camel-maven-plugin</artifactId>
+					<version>${camel.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/*</include>
+				</includes>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test/java</directory>
+				<filtering>false</filtering>
+			</testResource>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>false</filtering>
+			</testResource>
+		</testResources>
+	</build>
 
-  <name>FirstProject</name>
+	<name>FirstProject</name>
 </project>
