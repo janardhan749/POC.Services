@@ -1,6 +1,7 @@
 package com.mypractice.in.FirstProject;
 
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -20,6 +21,7 @@ public class Resource {
 		// this does nothing -- just a shell for CXF and Camel
 		return null;
 	}*/	
+    @RolesAllowed("admin2")
 	@GET
 	@Path("/{admin}")
 	@Produces({"application/json", "application/xml", "application/problem+json" })

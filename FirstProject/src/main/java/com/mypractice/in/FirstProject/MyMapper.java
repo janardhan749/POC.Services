@@ -1,5 +1,6 @@
 package com.mypractice.in.FirstProject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,9 @@ import javax.ws.rs.core.MediaType;
 import org.apache.camel.Exchange;
 import org.apache.camel.component.cxf.common.message.CxfConstants;
 import org.apache.cxf.message.MessageContentsList;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -65,22 +69,17 @@ public class MyMapper {
 		exchange.getIn().setHeader("routes", destns);*/
 	}
 
-	public void parallelResponse(Exchange exchange) {
+	public String parallelResponse(Exchange exchange) throws JsonGenerationException, JsonMappingException, IOException {
 		LOG.info("Entered into parallelResponse method");
 		
 		Object list = exchange.getIn().getBody();
 		LOG.debug("Exchange Body received :: "+ list);
-		exchange.getIn().setBody(list);
-		/*// 
-		// 
-		// Persons persons = (Persons) list.get(1);
 		
-		 Persons persons = (Persons) exchange.getIn().getBody();
-		  persons.setCompany("Wipro-PDC");
-		 
-		exchange.getIn().setBody(persons);
-		List<Persons> persons = (List<Persons>) exchange.getProperty("PersonList");
-		exchange.getIn().setBody(persons.get(0));*/
+		ObjectMapper mapper = new ObjectMapper();
+		String response = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(list);
+		
 		LOG.info("Finished parallelResponse method");
+		return response;
+		
 	}
 }

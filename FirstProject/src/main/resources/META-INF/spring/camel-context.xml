@@ -14,95 +14,103 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
        http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd
        http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
-       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd" >
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
 
-<bean id="loggingFeature" class="org.apache.cxf.feature.LoggingFeature" />
-<bean id="jsonDataProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
-<bean id="GZIPInInterceptor" class="org.apache.cxf.transport.common.gzip.GZIPInInterceptor" />
-<bean id="serviceClass" class="com.mypractice.in.FirstProject.Resource" />
+	<bean id="loggingFeature" class="org.apache.cxf.feature.LoggingFeature" />
+	<bean id="jsonDataProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
+	<bean id="GZIPInInterceptor" class="org.apache.cxf.transport.common.gzip.GZIPInInterceptor" />
+	<bean id="serviceClass" class="com.mypractice.in.FirstProject.Resource" />
+	
+	<bean id="authInterceptor"
+            class="org.apache.cxf.interceptor.security.SecureAnnotationsInterceptor">
+            <property name="securedObject" ref="serviceClass" />
+      </bean>
+ 
+      <bean id="authorizationFilter" class="org.apache.cxf.jaxrs.security.SimpleAuthorizingFilter">
+            <property name="interceptor" ref="authInterceptor" />
+      </bean>
+ 
+      <bean id="jAASAuthenticationFilter" class="org.apache.cxf.jaxrs.security.JAASAuthenticationFilter">
+            <property name="contextName" value="karaf" />
+            <property name="roleClassifier" value="admin2" />
+            <property name="roleClassifierType" value="prefix" />
+      </bean>
 
-<cxf:rsServer id="CXFRestEndpoint" address="http://localhost:8999/user">
-	<cxf:serviceBeans>
-		<ref bean="serviceClass" />
-	</cxf:serviceBeans>
-	<cxf:features> 
-		<ref bean="loggingFeature" /> 
-	</cxf:features> 
-	<cxf:providers> 
-		<ref bean="jsonDataProvider" />
-		<!-- <bean bean="exception" /> --> 
-	</cxf:providers> 
-	<cxf:inInterceptors> 
-		<ref bean="GZIPInInterceptor" /> 
-	</cxf:inInterceptors>
-</cxf:rsServer>
-<cxf:rsClient id="StubEndpoint" address="http://localhost:8181/cxf/v1/stub/">
-	<cxf:properties>
+	<bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
+		<property name="brokerURL" value="tcp://localhost:61616" />
+		<property name="userName" value="admin" />
+		<property name="password" value="admin" />
+	</bean>
+
+	<cxf:rsServer id="CXFRestEndpoint" address="http://localhost:8999/user">
+		<cxf:serviceBeans>
+			<ref bean="serviceClass" />
+		</cxf:serviceBeans>
+		<cxf:features>
+			<ref bean="loggingFeature" />
+		</cxf:features>
+		<cxf:providers>
+			<ref bean="jsonDataProvider" />
+			<ref bean="jAASAuthenticationFilter" />
+			<ref bean="authorizationFilter" />
+			<!-- <bean bean="exception" /> -->
+		</cxf:providers>
+		<cxf:inInterceptors>
+			<ref bean="GZIPInInterceptor" />
+		</cxf:inInterceptors>
+	</cxf:rsServer>
+	<cxf:rsClient id="StubEndpoint" address="http://localhost:8181/cxf/v1/stub/">
+		<cxf:properties>
 			<entry key="dataFormat" value="POJO" />
-	</cxf:properties>
-	<cxf:features> 
-		<ref bean="loggingFeature" /> 
-	</cxf:features> 
-	<cxf:providers> 
-		<ref bean="jsonDataProvider" /> 
-	</cxf:providers> 
-	<cxf:inInterceptors> 
-		<ref bean="GZIPInInterceptor" /> 
-	</cxf:inInterceptors>
-</cxf:rsClient>
+		</cxf:properties>
+		<cxf:features>
+			<ref bean="loggingFeature" />
+		</cxf:features>
+		<cxf:providers>
+			<ref bean="jsonDataProvider" />
+		</cxf:providers>
+		<cxf:inInterceptors>
+			<ref bean="GZIPInInterceptor" />
+		</cxf:inInterceptors>
+	</cxf:rsClient>
 
-<bean id="datamapper" class="com.mypractice.in.FirstProject.DataMapper" />
-<bean id="mymapper" class="com.mypractice.in.FirstProject.MyMapper" />
-<bean id="myAggregateRef" class="com.mypractice.in.FirstProject.AggregationRef" />
+	<bean id="datamapper" class="com.mypractice.in.FirstProject.DataMapper" />
+	<bean id="mymapper" class="com.mypractice.in.FirstProject.MyMapper" />
+	<bean id="myAggregateRef" class="com.mypractice.in.FirstProject.AggregationRef" />
 
-<camelContext id="routes" xmlns="http://camel.apache.org/schema/spring" >
+	<camelContext id="routes" xmlns="http://camel.apache.org/schema/spring">
 
-	 <route handleFault="true" streamCache="true" id="Route"> 
-			<from uri="cxfrs://bean://CXFRestEndpoint?synchronous=true"/>
-			<camel:split strategyRef="myAggregateRef" parallelProcessing="true">
-				<camel:method ref="mymapper" method="setRequestPaths"/>
+		<route handleFault="true" streamCache="true" id="Route">
+			<from uri="cxfrs://bean://CXFRestEndpoint" />
+			
+			<camel:split strategyRef="myAggregateRef"
+				parallelProcessing="true">
+				<camel:method ref="mymapper" method="setRequestPaths" />
 				<to uri="direct:Route2" />
 			</camel:split>
-			
-			<!-- <recipientList strategyRef="myAggregateRef" parallelProcessing="true" >
-        		<header>routes</header>
-    		</recipientList> -->
-    		
-    		<bean ref="mymapper" method="parallelResponse"/>
-	</route>
-	
-	<route handleFault="true" streamCache="true" id="Route2"> 
-		<from uri="direct:Route2" />
-		<bean ref="mymapper" method="parallelCall"/>
-		<to uri = "cxfrs:bean:StubEndpoint" id="mockEnd"/>
-	</route>
-	
-		<!-- <route handleFault="true" streamCache="true" id="Route"> 
-			<from uri="cxfrs://bean://CXFRestEndpoint?synchronous=true"/>
-			<bean ref="datamapper" method="Validate"/>
-			<bean ref="datamapper" method="mapRequest"/>
-			<doTry>
-    			<to uri = "cxfrs:bean:StubEndpoint" id="mockEnd"/>
-    			<doCatch>
-		       		 <exception>javax.ws.rs.NotFoundException</exception>
-		       		 <exception>javax.ws.rs.client.ClientException</exception>
-		       		 <exception>javax.ws.rs.NotAllowedException</exception>
-		       		 <handled><constant>true</constant></handled>
-		       		 <bean ref="datamapper" method="throwErrorService"/>
-		     	 </doCatch>
-		    	<doCatch>
-		       		 <exception>javax.ws.rs.WebApplicationException</exception>
-		       		 <handled><constant>true</constant></handled>
-		       		 <bean ref="datamapper" method="throwError"/>
-		     	 </doCatch>
-		     	 <doCatch>
-		       		 <exception>java.lang.Exception</exception>
-		       		 <handled><constant>true</constant></handled>
-		     	 </doCatch>
-		    </doTry>
-		    <bean ref="datamapper" method="mapResponse"/>
-		</route> -->
-			
-</camelContext>
+<camel:setExchangePattern pattern="InOnly"></camel:setExchangePattern>
+			<!-- <recipientList strategyRef="myAggregateRef" parallelProcessing="true" 
+				> <header>routes</header> </recipientList> -->
+			<bean ref="mymapper" method="parallelResponse" />
+			<to uri="activemq:queue:TestMQ" />
+		</route>
+
+		<route handleFault="true" streamCache="true" id="Route2">
+			<from uri="direct:Route2" />
+			<bean ref="mymapper" method="parallelCall" />
+			<to uri="cxfrs:bean:StubEndpoint" id="mockEnd" />
+		</route>
+
+		<!-- <route handleFault="true" streamCache="true" id="Route"> <from uri="cxfrs://bean://CXFRestEndpoint?synchronous=true"/> 
+			<bean ref="datamapper" method="Validate"/> <bean ref="datamapper" method="mapRequest"/> 
+			<doTry> <to uri = "cxfrs:bean:StubEndpoint" id="mockEnd"/> <doCatch> <exception>javax.ws.rs.NotFoundException</exception> 
+			<exception>javax.ws.rs.client.ClientException</exception> <exception>javax.ws.rs.NotAllowedException</exception> 
+			<handled><constant>true</constant></handled> <bean ref="datamapper" method="throwErrorService"/> 
+			</doCatch> <doCatch> <exception>javax.ws.rs.WebApplicationException</exception> 
+			<handled><constant>true</constant></handled> <bean ref="datamapper" method="throwError"/> 
+			</doCatch> <doCatch> <exception>java.lang.Exception</exception> <handled><constant>true</constant></handled> 
+			</doCatch> </doTry> <bean ref="datamapper" method="mapResponse"/> </route> -->
+
+	</camelContext>
 </beans>

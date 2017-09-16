@@ -16,6 +16,7 @@
 		<jackson.version>1.9.13</jackson.version>
 		<spring.version>4.3.9.RELEASE</spring.version>
 		<cxf.version>3.1.5.redhat-630187</cxf.version>
+		<amq.version>5.11.0.redhat-630187</amq.version>
 		<!-- <cxf.version>2.7.0.redhat-611412</cxf.version> -->
 		<camel.version>2.17.0.redhat-630187</camel.version>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -126,12 +127,8 @@
 			<artifactId>spring-web</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-<!-- 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-asm</artifactId>
-			<version>${spring.version}</version>
-			<scope>compile</scope>
-		</dependency> -->
+		<!-- <dependency> <groupId>org.springframework</groupId> <artifactId>spring-asm</artifactId> 
+			<version>${spring.version}</version> <scope>compile</scope> </dependency> -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
@@ -212,6 +209,13 @@
 			<!-- Use the same version as your Camel core version -->
 		</dependency>
 
+		<!-- active mq -->
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-camel</artifactId>
+			<version>${amq.version}</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -242,6 +246,7 @@
 							javax.ws.rs.client,
 							javax.ws.rs.core,
 							javax.ws.rs.ext,
+							org.apache.activemq.camel.component,
 							org.apache.camel,
 							org.apache.camel.builder,
 							org.apache.camel.model.*,
